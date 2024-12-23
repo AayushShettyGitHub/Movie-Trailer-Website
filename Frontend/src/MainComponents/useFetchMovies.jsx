@@ -10,6 +10,7 @@ const useFetchMovies = (keyword) => {
     const fetchMoviesData = async () => {
       try {
         const response = await axios.get(`http://localhost:5003/api/moviePopular?keyword=${keyword}`);
+      
         const { movies } = response.data;
         setMovies(movies);
       } catch (error) {

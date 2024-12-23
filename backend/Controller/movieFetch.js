@@ -13,6 +13,7 @@ exports.moviePopular = async (req, res) => {
 
     const omdbSearchUrl = `https://www.omdbapi.com/?apikey=${omdbKey}&s=${keyword}&type=movie`;
     const response = await axios.get(omdbSearchUrl);
+    console.log(response)
 
     if (response.data.Response === "True" && response.data.Search.length > 0) {
       const movies = response.data.Search.slice(0, 5); // Limit to 5 movies
@@ -33,6 +34,41 @@ exports.moviePopular = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch movies' });
   }
 };
+
+exports.movieDescription = async (req, res) => {
+  try {
+    const { imdbID } = req.query;
+
+    if (!imdbID) {
+      return res.status(400).json({ error: 'imdbID query parameter is required' });
+    }
+
+   
+    const omdbDetailUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${omdbKey}`;
+    const response = await axios.get(omdbDetailUrl);
+
+    if (response.data.Response === "True") {
+      const movieDetails = {
+        title: response.data.Title,
+        year: response.data.Year,
+        description: response.data.Plot !== "N/A" ? response.data.Plot : "No description available.",
+        rating: response.data.imdbRating !== "N/A" ? response.data.imdbRating : "No rating available.",
+        cast: response.data.Actors !== "N/A" ? response.data.Actors : "Cast not available.",
+        director: response.data.Director !== "N/A" ? response.data.Director : "Director not available.",
+        genre: response.data.Genre !== "N/A" ? response.data.Genre : "Genre not available.",
+        poster: response.data.Poster !== "N/A" ? response.data.Poster : null,
+      };
+
+      return res.json(movieDetails);
+    } else {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch movie description' });
+  }
+};
+
 exports.getTrailer = async (req, res) => {
   try {
     const { title } = req.query;

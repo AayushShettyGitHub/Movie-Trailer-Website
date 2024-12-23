@@ -2,9 +2,12 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Schema= require('../models/schema');
+const Schema = require('../models/schema');
+const { OAuth2Client } = require('google-auth-library');
 
+const clientID = process.env.GOOGLE_CLIENT_ID;
 const jwtSecret = process.env.JWT_SECRET;
+const client = new OAuth2Client(clientID);
 
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -14,10 +17,9 @@ exports.registerUser = async (req, res) => {
     const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
-    res.status(400).json({ error: 'Registration failed' });
+    res.status(400).json({ error: 'Registration failed', details: err.message });
   }
 };
-
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -30,9 +32,46 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ id: user._id },jwtSecret, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
-    res.status(400).json({ error: 'Login failed' });
+    res.status(400).json({ error: 'Login failed', details: err.message });
+  }
+};
+
+exports.googleSignIn = async (req, res) => {
+  const { googleToken } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: googleToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { name, email, picture } = payload;
+
+    let user = await Schema.findOne({ email });
+
+    if (!user) {
+      const newUser = new Schema({
+        name,
+        email,
+        password: null,
+        googleId: payload.sub,
+        profileImage: picture,
+      });
+
+      await newUser.save();
+
+      const token = jwt.sign({ id: newUser._id }, jwtSecret, { expiresIn: '1h' });
+      return res.json({ token });
+    }
+
+    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
+    res.json({ token });
+
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to authenticate with Google', details: err.message });
   }
 };
