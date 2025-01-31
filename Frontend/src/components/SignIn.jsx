@@ -11,7 +11,7 @@ const SignIn = ({ switchMode, setIsAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset error message
+    setErrorMessage(""); 
 
     try {
       const res = await axios.post("http://localhost:8082/api/verify/login", {
@@ -20,8 +20,8 @@ const SignIn = ({ switchMode, setIsAuthenticated }) => {
       });
 
       localStorage.setItem("token", res.data.token);
-      setIsAuthenticated(true); // Update authentication state
-      navigate("/main"); // Redirect to main page
+      setIsAuthenticated(true); 
+      navigate("/main"); 
     } catch (err) {
       setErrorMessage(err.response?.data?.message || "Login failed");
     }

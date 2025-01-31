@@ -1,8 +1,8 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const omdbKey = process.env.movieKey; // Your OMDb API key
-const youtubeKey = process.env.youtubeKey; // Your YouTube API key
+const omdbKey = process.env.movieKey; 
+const youtubeKey = process.env.youtubeKey; 
 exports.moviePopular = async (req, res) => {
   try {
     const { keyword } = req.query;
@@ -16,7 +16,7 @@ exports.moviePopular = async (req, res) => {
     console.log(response)
 
     if (response.data.Response === "True" && response.data.Search.length > 0) {
-      const movies = response.data.Search.slice(0, 5); // Limit to 5 movies
+      const movies = response.data.Search.slice(0, 5);
 
       const movieData = movies.map((movie) => ({
         title: movie.Title,
@@ -77,11 +77,11 @@ exports.getTrailer = async (req, res) => {
       return res.status(400).json({ error: 'Title query parameter is required' });
     }
 
-    // Search for a trailer on YouTube using the movie title
+
     const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?key=${youtubeKey}&q=${title} trailer&type=video&part=snippet&maxResults=1`;
     const youtubeResponse = await axios.get(youtubeSearchUrl);
 
-    // Check if a trailer is found
+   
     if (youtubeResponse.data.items.length > 0) {
       const trailerUrl = `https://www.youtube.com/watch?v=${youtubeResponse.data.items[0].id.videoId}`;
       return res.json({ trailerUrl });

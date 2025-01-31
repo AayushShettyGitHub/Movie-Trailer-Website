@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsAuthenticated(!!token); // Update authentication state based on token presence
+    setIsAuthenticated(!!token); 
     console.log("IsAuthenticated:", isAuthenticated);
     console.log("AuthToken:", localStorage.getItem('authToken'));
   }, []);

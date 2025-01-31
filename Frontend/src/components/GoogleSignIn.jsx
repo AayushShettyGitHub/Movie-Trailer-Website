@@ -23,7 +23,7 @@ const GoogleSignIn = ({ setIsAuthenticated }) => {
     if (data.token) {
       localStorage.setItem('authToken', data.token);
       setIsAuthenticated(true);
-      navigate("/main");  // Navigate to main page
+      navigate("/main");  
     } else {
       console.error("Login failed");
     }

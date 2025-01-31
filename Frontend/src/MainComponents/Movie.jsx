@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import useFetchMovies from './useFetchMovies'; // Adjust the path as necessary
-import MovieDetail from './MovieDetail'; // Adjust the path as necessary
+import useFetchMovies from './useFetchMovies'; 
+import MovieDetail from './MovieDetail'; 
 
 const Movie = ({ keyword, onPosterClick }) => {
   const { movies, loading, error } = useFetchMovies(keyword);
@@ -12,7 +12,7 @@ const Movie = ({ keyword, onPosterClick }) => {
 
   const handlePosterClick = (movie) => {
     setSelectedMovie(movie);
-    onPosterClick(movie); // Call the onPosterClick prop to handle state in SwitchComponent
+    onPosterClick(movie); 
   };
 
   const handleClose = () => {
@@ -47,7 +47,7 @@ const Movie = ({ keyword, onPosterClick }) => {
                   src={movie.poster || '/placeholder.png'}
                   alt={movie.title}
                   className="w-full h-64 object-cover rounded-lg shadow-lg cursor-pointer"
-                  onClick={() => handlePosterClick(movie)} // Open MovieDetail on poster click
+                  onClick={() => handlePosterClick(movie)}
                 />
                 <h2 className="mt-4 text-lg font-semibold text-center">{movie.title} ({movie.year})</h2>
               </div>

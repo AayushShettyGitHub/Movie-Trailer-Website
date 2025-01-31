@@ -32,7 +32,7 @@ const SwitchComponent = ({ isAuthenticated }) => {
 
   return (
     <div className="bg-black text-white min-h-screen relative">
-      {isAuthenticated && <NavBar onSearch={handleSearch} />} {/* Render NavBar only if authenticated */}
+      {isAuthenticated && <NavBar onSearch={handleSearch} />} 
       {activeMovie ? (
         <MovieDetail movie={activeMovie} onClose={closeMovieDetail} />
       ) : (

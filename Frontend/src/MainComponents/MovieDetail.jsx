@@ -12,7 +12,7 @@ const MovieDetail = ({ movie, onClose }) => {
     genre: "",
   });
 
-  // Fetch trailer URL
+
   const fetchTrailer = async (title) => {
     try {
       const response = await axios.get(`http://localhost:5003/api/getTrailer?title=${title}`);
@@ -24,7 +24,7 @@ const MovieDetail = ({ movie, onClose }) => {
     }
   };
 
-  // Fetch movie details
+
   const fetchMovieDetails = async (imdbID) => {
     try {
       const response = await axios.get(`http://localhost:5003/api/movieDescription?imdbID=${imdbID}`);
@@ -56,7 +56,7 @@ const MovieDetail = ({ movie, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 overflow-y-auto">
       <div className="relative w-full h-full flex flex-col bg-gradient-to-r from-gray-900 to-black text-white p-10">
-        {/* Close Button */}
+        
         <button
           onClick={onClose}
           className="absolute top-4 right-4 bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 transition duration-300"
@@ -64,22 +64,22 @@ const MovieDetail = ({ movie, onClose }) => {
           X
         </button>
 
-        {/* Movie Info */}
+       
         <div className="flex flex-col lg:flex-row justify-between gap-8 mb-10">
-          {/* Poster */}
+       
           <img
             src={movie.poster}
             alt={movie.title}
             className="w-full lg:w-72 h-auto rounded-lg shadow-lg transition-transform duration-500 hover:scale-110"
           />
 
-          {/* Movie Details */}
+          
           <div className="flex-1">
             <h1 className="text-4xl font-bold mb-4">{movie.title} ({movie.year})</h1>
             <p className="text-lg text-gray-400 mb-2 italic">{movieDetails.genre}</p>
             <p className="text-base text-gray-300 mb-4">{movieDetails.description}</p>
 
-            {/* Trailer */}
+          
             {trailerUrl !== "Trailer not available" ? (
               <div className="mt-6 rounded-lg overflow-hidden shadow-lg">
                 <ReactPlayer
@@ -95,13 +95,13 @@ const MovieDetail = ({ movie, onClose }) => {
           </div>
         </div>
 
-        {/* Cast Details (with placeholder images) */}
+     
         <div className="flex flex-wrap justify-center gap-8 mt-12">
           <h3 className="text-2xl font-semibold mb-4 text-center w-full">Cast:</h3>
           {movieDetails.cast ? (
             movieDetails.cast.split(",").map((actor, index) => (
               <div key={index} className="flex flex-col items-center text-center">
-                <div className="w-32 h-32 bg-gray-500 rounded-full mb-2"></div> {/* Placeholder for cast image */}
+                <div className="w-32 h-32 bg-gray-500 rounded-full mb-2"></div>
                 <span className="text-gray-300 text-lg">{actor.trim()}</span>
               </div>
             ))
@@ -110,15 +110,15 @@ const MovieDetail = ({ movie, onClose }) => {
           )}
         </div>
 
-        {/* Director Info */}
+       
         <div className="flex justify-center mt-10">
           <div className="flex flex-col items-center text-center">
-            <div className="w-32 h-32 bg-gray-500 rounded-full mb-2"></div> {/* Placeholder for director image */}
+            <div className="w-32 h-32 bg-gray-500 rounded-full mb-2"></div> 
             <p className="text-lg text-gray-300">{movieDetails.director}</p>
           </div>
         </div>
 
-        {/* Scrollable Area for Description */}
+       
         <div className="mt-10 overflow-y-auto max-h-96 px-4">
           <p className="text-lg text-gray-300">{movieDetails.description}</p>
         </div>

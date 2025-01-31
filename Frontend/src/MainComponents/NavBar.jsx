@@ -173,7 +173,7 @@ function NavBar({ onSearch }) {
           </div>
         </div>
 
-        {/* Sidebar for mobile */}
+        
         <div
           className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
                       transition-transform duration-300 ease-in-out bg-gray-900 text-white w-64 p-4 md:hidden z-50`}

@@ -51,26 +51,24 @@ exports.googleSignIn = async (req, res) => {
     const payload = ticket.getPayload();
     const { name, email, picture } = payload;
 
+
     let user = await Schema.findOne({ email });
 
     if (!user) {
+      
       const newUser = new Schema({
         name,
         email,
-        password: null,
         googleId: payload.sub,
         profileImage: picture,
       });
 
-      await newUser.save();
-
-      const token = jwt.sign({ id: newUser._id }, jwtSecret, { expiresIn: '1h' });
-      return res.json({ token });
+      user = await newUser.save(); 
     }
 
+   
     const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
     res.json({ token });
-
   } catch (err) {
     res.status(400).json({ error: 'Failed to authenticate with Google', details: err.message });
   }

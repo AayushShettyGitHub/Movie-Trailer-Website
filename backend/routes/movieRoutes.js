@@ -1,7 +1,7 @@
-// Backend/routes/movieRoutes.js
+
 const express = require('express');
 
-const {moviePopular ,movieDescription,getTrailer} = require('../Controller/movieFetch'); // Correctly import movieGenre
+const {moviePopular ,movieDescription,getTrailer} = require('../Controller/movieFetch'); 
 
 
 const router = express.Router();
